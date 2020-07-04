@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="purchasesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Buy">
+          <Key>
+            <PropertyRef Name="id_buy" />
+          </Key>
+          <Property Name="id_buy" Type="int" Nullable="false" />
+          <Property Name="date_buy" Type="date" />
+          <Property Name="total_buy" Type="varchar" MaxLength="30" />
+          <Property Name="observation_buy" Type="varchar" MaxLength="50" />
+          <Property Name="state_buy" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Buy_Detail">
+          <Key>
+            <PropertyRef Name="id_bd" />
+          </Key>
+          <Property Name="id_bd" Type="int" Nullable="false" />
+          <Property Name="amount_bd" Type="varchar" MaxLength="30" />
+          <Property Name="price" Type="varchar" MaxLength="30" />
+          <Property Name="sub_total" Type="varchar" MaxLength="30" />
+          <Property Name="Product_id_prod" Type="int" Nullable="false" />
+          <Property Name="Buy_id_buy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PayDetail">
+          <Key>
+            <PropertyRef Name="id_pd" />
+          </Key>
+          <Property Name="id_pd" Type="int" Nullable="false" />
+          <Property Name="date_pd" Type="date" />
+          <Property Name="pay_pd" Type="varchar" MaxLength="30" />
+          <Property Name="bank_pd" Type="varchar" MaxLength="50" />
+          <Property Name="Buy_id_buy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id_prod" />
+          </Key>
+          <Property Name="id_prod" Type="int" Nullable="false" />
+          <Property Name="nom_prod" Type="varchar" MaxLength="30" />
+          <Property Name="desc_prod" Type="varchar" MaxLength="50" />
+          <Property Name="Provider_id_prov" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Provider">
+          <Key>
+            <PropertyRef Name="id_prov" />
+          </Key>
+          <Property Name="id_prov" Type="int" Nullable="false" />
+          <Property Name="name_prov" Type="varchar" MaxLength="30" />
+          <Property Name="country_prov" Type="varchar" MaxLength="30" />
+          <Property Name="swift_prov" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="Buy_Detail_Buy_FK">
+          <End Role="Buy" Type="Self.Buy" Multiplicity="1" />
+          <End Role="Buy_Detail" Type="Self.Buy_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buy">
+              <PropertyRef Name="id_buy" />
+            </Principal>
+            <Dependent Role="Buy_Detail">
+              <PropertyRef Name="Buy_id_buy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Buy_Detail_Product_FK">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Buy_Detail" Type="Self.Buy_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_prod" />
+            </Principal>
+            <Dependent Role="Buy_Detail">
+              <PropertyRef Name="Product_id_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PayDetail_Buy_FK">
+          <End Role="Buy" Type="Self.Buy" Multiplicity="1" />
+          <End Role="PayDetail" Type="Self.PayDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buy">
+              <PropertyRef Name="id_buy" />
+            </Principal>
+            <Dependent Role="PayDetail">
+              <PropertyRef Name="Buy_id_buy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Product_Provider_FK">
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="id_prov" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Provider_id_prov" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="purchasesModelStoreContainer">
+          <EntitySet Name="Buy" EntityType="Self.Buy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Buy_Detail" EntityType="Self.Buy_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PayDetail" EntityType="Self.PayDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provider" EntityType="Self.Provider" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Buy_Detail_Buy_FK" Association="Self.Buy_Detail_Buy_FK">
+            <End Role="Buy" EntitySet="Buy" />
+            <End Role="Buy_Detail" EntitySet="Buy_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="Buy_Detail_Product_FK" Association="Self.Buy_Detail_Product_FK">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Buy_Detail" EntitySet="Buy_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="PayDetail_Buy_FK" Association="Self.PayDetail_Buy_FK">
+            <End Role="Buy" EntitySet="Buy" />
+            <End Role="PayDetail" EntitySet="PayDetail" />
+          </AssociationSet>
+          <AssociationSet Name="Product_Provider_FK" Association="Self.Product_Provider_FK">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="purchasesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Buy">
+          <Key>
+            <PropertyRef Name="id_buy" />
+          </Key>
+          <Property Name="id_buy" Type="Int32" Nullable="false" />
+          <Property Name="date_buy" Type="DateTime" Precision="0" />
+          <Property Name="total_buy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="observation_buy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state_buy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Buy_Detail" Relationship="Self.Buy_Detail_Buy_FK" FromRole="Buy" ToRole="Buy_Detail" />
+          <NavigationProperty Name="PayDetail" Relationship="Self.PayDetail_Buy_FK" FromRole="Buy" ToRole="PayDetail" />
+        </EntityType>
+        <EntityType Name="Buy_Detail">
+          <Key>
+            <PropertyRef Name="id_bd" />
+          </Key>
+          <Property Name="id_bd" Type="Int32" Nullable="false" />
+          <Property Name="amount_bd" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="sub_total" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Product_id_prod" Type="Int32" Nullable="false" />
+          <Property Name="Buy_id_buy" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Buy" Relationship="Self.Buy_Detail_Buy_FK" FromRole="Buy_Detail" ToRole="Buy" />
+          <NavigationProperty Name="Product" Relationship="Self.Buy_Detail_Product_FK" FromRole="Buy_Detail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="PayDetail">
+          <Key>
+            <PropertyRef Name="id_pd" />
+          </Key>
+          <Property Name="id_pd" Type="Int32" Nullable="false" />
+          <Property Name="date_pd" Type="DateTime" Precision="0" />
+          <Property Name="pay_pd" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="bank_pd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Buy_id_buy" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Buy" Relationship="Self.PayDetail_Buy_FK" FromRole="PayDetail" ToRole="Buy" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id_prod" />
+          </Key>
+          <Property Name="id_prod" Type="Int32" Nullable="false" />
+          <Property Name="nom_prod" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="desc_prod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Provider_id_prov" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Buy_Detail" Relationship="Self.Buy_Detail_Product_FK" FromRole="Product" ToRole="Buy_Detail" />
+          <NavigationProperty Name="Provider" Relationship="Self.Product_Provider_FK" FromRole="Product" ToRole="Provider" />
+        </EntityType>
+        <EntityType Name="Provider">
+          <Key>
+            <PropertyRef Name="id_prov" />
+          </Key>
+          <Property Name="id_prov" Type="Int32" Nullable="false" />
+          <Property Name="name_prov" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="country_prov" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="swift_prov" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Product" Relationship="Self.Product_Provider_FK" FromRole="Provider" ToRole="Product" />
+        </EntityType>
+        <Association Name="Buy_Detail_Buy_FK">
+          <End Role="Buy" Type="Self.Buy" Multiplicity="1" />
+          <End Role="Buy_Detail" Type="Self.Buy_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buy">
+              <PropertyRef Name="id_buy" />
+            </Principal>
+            <Dependent Role="Buy_Detail">
+              <PropertyRef Name="Buy_id_buy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PayDetail_Buy_FK">
+          <End Role="Buy" Type="Self.Buy" Multiplicity="1" />
+          <End Role="PayDetail" Type="Self.PayDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buy">
+              <PropertyRef Name="id_buy" />
+            </Principal>
+            <Dependent Role="PayDetail">
+              <PropertyRef Name="Buy_id_buy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Buy_Detail_Product_FK">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Buy_Detail" Type="Self.Buy_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_prod" />
+            </Principal>
+            <Dependent Role="Buy_Detail">
+              <PropertyRef Name="Product_id_prod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Product_Provider_FK">
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="id_prov" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Provider_id_prov" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="purchasesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Buy" EntityType="Self.Buy" />
+          <EntitySet Name="Buy_Detail" EntityType="Self.Buy_Detail" />
+          <EntitySet Name="PayDetail" EntityType="Self.PayDetail" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Provider" EntityType="Self.Provider" />
+          <AssociationSet Name="Buy_Detail_Buy_FK" Association="Self.Buy_Detail_Buy_FK">
+            <End Role="Buy" EntitySet="Buy" />
+            <End Role="Buy_Detail" EntitySet="Buy_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="PayDetail_Buy_FK" Association="Self.PayDetail_Buy_FK">
+            <End Role="Buy" EntitySet="Buy" />
+            <End Role="PayDetail" EntitySet="PayDetail" />
+          </AssociationSet>
+          <AssociationSet Name="Buy_Detail_Product_FK" Association="Self.Buy_Detail_Product_FK">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Buy_Detail" EntitySet="Buy_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="Product_Provider_FK" Association="Self.Product_Provider_FK">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="purchasesModelStoreContainer" CdmEntityContainer="purchasesEntities">
+          <EntitySetMapping Name="Buy">
+            <EntityTypeMapping TypeName="purchasesModel.Buy">
+              <MappingFragment StoreEntitySet="Buy">
+                <ScalarProperty Name="id_buy" ColumnName="id_buy" />
+                <ScalarProperty Name="date_buy" ColumnName="date_buy" />
+                <ScalarProperty Name="total_buy" ColumnName="total_buy" />
+                <ScalarProperty Name="observation_buy" ColumnName="observation_buy" />
+                <ScalarProperty Name="state_buy" ColumnName="state_buy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Buy_Detail">
+            <EntityTypeMapping TypeName="purchasesModel.Buy_Detail">
+              <MappingFragment StoreEntitySet="Buy_Detail">
+                <ScalarProperty Name="id_bd" ColumnName="id_bd" />
+                <ScalarProperty Name="amount_bd" ColumnName="amount_bd" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="sub_total" ColumnName="sub_total" />
+                <ScalarProperty Name="Product_id_prod" ColumnName="Product_id_prod" />
+                <ScalarProperty Name="Buy_id_buy" ColumnName="Buy_id_buy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayDetail">
+            <EntityTypeMapping TypeName="purchasesModel.PayDetail">
+              <MappingFragment StoreEntitySet="PayDetail">
+                <ScalarProperty Name="id_pd" ColumnName="id_pd" />
+                <ScalarProperty Name="date_pd" ColumnName="date_pd" />
+                <ScalarProperty Name="pay_pd" ColumnName="pay_pd" />
+                <ScalarProperty Name="bank_pd" ColumnName="bank_pd" />
+                <ScalarProperty Name="Buy_id_buy" ColumnName="Buy_id_buy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="purchasesModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="id_prod" ColumnName="id_prod" />
+                <ScalarProperty Name="nom_prod" ColumnName="nom_prod" />
+                <ScalarProperty Name="desc_prod" ColumnName="desc_prod" />
+                <ScalarProperty Name="Provider_id_prov" ColumnName="Provider_id_prov" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provider">
+            <EntityTypeMapping TypeName="purchasesModel.Provider">
+              <MappingFragment StoreEntitySet="Provider">
+                <ScalarProperty Name="id_prov" ColumnName="id_prov" />
+                <ScalarProperty Name="name_prov" ColumnName="name_prov" />
+                <ScalarProperty Name="country_prov" ColumnName="country_prov" />
+                <ScalarProperty Name="swift_prov" ColumnName="swift_prov" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
